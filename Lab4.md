@@ -106,18 +106,18 @@ subset(df, ((Ozone > 31) & (Temp > 90)), select = Ozone:Day)
 126    73     183  2.8   93     9   3
 127    91     189  4.6   93     9   4
 
-mean(subset(df, ((Ozone > 31) & (Temp > 90)), select = Ozone:Day)$Solar.R)
+mean(subset(df, (Ozone > 31) & (Temp > 90))$Solar.R)
 [1] 212.8
 ```
 
 8. Яке середнє значення (mean) для «Temp» для червня («Month» дорівнює 6)?
 ```{r}
-mean(subset(df, Month == 6, select = Ozone:Day)$Temp)
+mean(subset(df, Month == 6)$Temp)
 [1] 79.1
 ```
 
 9. Яке максимальне значення «Ozone» для травня («Month» дорівнює 5)?
 ```{r}
-max(subset(df, ((Ozone > 0) & (Month == 5)), select = Ozone:Day)$Ozone)
+max(subset(df, (Ozone > 0) & (Month == 5))$Ozone)
 [1] 115
 ```
