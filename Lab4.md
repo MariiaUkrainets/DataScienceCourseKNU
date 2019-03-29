@@ -23,6 +23,9 @@ $ Day    : int  1 2 3 4 5 6 7 8 9 10 ...
 names(df)
 [1] "Ozone"   "Solar.R" "Wind"    "Temp"    "Month"   "Day"    
 
+colnames(df)
+[1] "Ozone"   "Solar.R" "Wind"    "Temp"    "Month"   "Day"  
+
 ```
 
 2. Виведіть перші 6 строк фрейму даних.
