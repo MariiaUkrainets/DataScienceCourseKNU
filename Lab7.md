@@ -25,7 +25,6 @@ file.names
 olympics
 olympics <- prepare_set(“olympics.csv”)
 
-
 library("stringr")
 ```
 
@@ -57,30 +56,22 @@ olympics <- read.csv("olympics.csv", skip = 1, header = TRUE, encoding="UTF-8", 
 
 6. Видаліть з дата фрейму останню строку “Totals”
 ```{r}
-
-names(olympics)[1] <- 'Country'
-for (i in 1:length(names(olympics))) {
-  name <- names(olympics)[i]
-  if (str_sub(name, 2,3) == '01' names(olympics)[i] <- str_c('Gold', str_sub(name, 6))
-  if (str_sub(name, 2,3) == '02' names(olympics)[i] <- str_c('Silver', str_sub(name, 6))
-  if (str_sub(name, 2,3) == '03' names(olympics)[i] <- str_c('Bronze', str_sub(name, 6))
-  if (str_sub(name, 3,3) == 'U' names(olympics)[i] <- str_sub(name, 11)
+prepare_set <- function(){
+    names(olympics)[1] <- 'Country'
+    for (i in 1:length(names(olympics))) {
+        name <- names(olympics)[i]
+        if (str_sub(name, 2,3) == '01' names(olympics)[i] <- str_c('Gold', str_sub(name, 6))
+        if (str_sub(name, 2,3) == '02' names(olympics)[i] <- str_c('Silver', str_sub(name, 6))
+        if (str_sub(name, 2,3) == '03' names(olympics)[i] <- str_c('Bronze', str_sub(name, 6))
+        if (str_sub(name, 3,3) == 'U' names(olympics)[i] <- str_sub(name, 11)
 }
-
-colnames(olympics) <- c("Country", "Summer", "Gold", "Silver", "Bronze", "Total", "Winter", "Gold.1", "Silver.1", "Bronze.1", "Total.1", "Games", "Gold.2", "Silver.2", "Bronze.2", "Combined.total")
-
-countries <- strsplit(olympics$Country, "(", fixed=TRUE)
-
-olympics$Country <- sapply(countries, "[", 1)
-
-olympics$Country <- str_trim(olympics$Country)
-
-olympics$ID <- sapply(countries, "[", 2)
-
-olympics$ID <- str_sub(olympics$ID, 1, 3)
-
-olympics <- olympics[-which(olympics$Country == "Totals"),]
-
+    countries <- strsplit(olympics$Country, "(", fixed=TRUE)
+    olympics$Country <- sapply(countries, "[", 1)
+    olympics$Country <- str_trim(olympics$Country)
+    olympics$ID <- sapply(countries, "[", 2)
+    olympics$ID <- str_sub(olympics$ID, 1, 3)
+    olympics <- olympics[-which(olympics$Country == "Totals"),]
+}
 tail(olympics$Country)
 [1] "Virgin Islands"                  
 [2] "Yugoslavia"                      
@@ -105,7 +96,6 @@ answer_one <- function() {
 answer_one()
 [1] "United States"
 
-
 ```
 Питання 2
 Яка країна має найбільшу різницю між кількістю нагород на літніх та зимових
@@ -128,7 +118,11 @@ answer_two()
 зимових іграх.
 Функція повинна повернути одне текстове значення.
 ```{r}
+answer_three <- function() {
+    olympics[which.max((olympics$Gold - olympics$Gold.1)/(olympics$Gold + olympics$Gold.1)), 'Country']
+    }
 
+answer_three()
 ```
 Питання 4
 Необхідно знайти кількість балів по кожній крайні. Бали рахуються наступним
