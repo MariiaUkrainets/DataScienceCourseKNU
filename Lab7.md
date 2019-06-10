@@ -21,19 +21,13 @@ out.file <- ""
 file.names <- dir(path, pattern =".csv")
 file.names
 
-
-olympics
-olympics <- prepare_set(“olympics.csv”)
-
 library("stringr")
 ```
 
 Функція prepare_set повинна виконувати наступні дії:
 
     1. Зчитати файл
-```{r}
-olympics <- read.csv("olympics.csv", skip = 1, header = TRUE, encoding="UTF-8", stringsAsFactors = FALSE)
-```
+`
 
 2. Першому стовпцю дати назву “Country”
 
@@ -56,14 +50,15 @@ olympics <- read.csv("olympics.csv", skip = 1, header = TRUE, encoding="UTF-8", 
 
 6. Видаліть з дата фрейму останню строку “Totals”
 ```{r}
-prepare_set <- function(){
+prepare_set <- function(file_name){
+    olympics <- read.csv(file_name, skip = 1, header = TRUE, encoding="UTF-8", stringsAsFactors = FALSE)
     names(olympics)[1] <- 'Country'
     for (i in 1:length(names(olympics))) {
         name <- names(olympics)[i]
-        if (str_sub(name, 2,3) == '01' names(olympics)[i] <- str_c('Gold', str_sub(name, 6))
-        if (str_sub(name, 2,3) == '02' names(olympics)[i] <- str_c('Silver', str_sub(name, 6))
-        if (str_sub(name, 2,3) == '03' names(olympics)[i] <- str_c('Bronze', str_sub(name, 6))
-        if (str_sub(name, 3,3) == 'U' names(olympics)[i] <- str_sub(name, 11)
+        if (str_sub(name, 2,3) == '01') names(olympics)[i] <- str_c('Gold', str_sub(name, 6))
+        if (str_sub(name, 2,3) == '02') names(olympics)[i] <- str_c('Silver', str_sub(name, 6))
+        if (str_sub(name, 2,3) == '03') names(olympics)[i] <- str_c('Bronze', str_sub(name, 6))
+        if (str_sub(name, 3,3) == 'U') names(olympics)[i] <- str_sub(name, 11)
 }
     countries <- strsplit(olympics$Country, "(", fixed=TRUE)
     olympics$Country <- sapply(countries, "[", 1)
@@ -71,8 +66,12 @@ prepare_set <- function(){
     olympics$ID <- sapply(countries, "[", 2)
     olympics$ID <- str_sub(olympics$ID, 1, 3)
     olympics <- olympics[-which(olympics$Country == "Totals"),]
+    olympics
 }
+prepare_set('olympics.csv')
+
 tail(olympics$Country)
+
 [1] "Virgin Islands"                  
 [2] "Yugoslavia"                      
 [3] "Independent Olympic Participants"
@@ -109,7 +108,6 @@ answer_two <- function() {
 answer_two()
 [1] "United States"
 
-
 ```
 Питання 3
 В якій крайні найбільша різниця між літніми та зимовими золотими нагородами
@@ -119,10 +117,13 @@ answer_two()
 Функція повинна повернути одне текстове значення.
 ```{r}
 answer_three <- function() {
+    olympics <- subset(olympics, Gold>0 & Gold.1>0)
     olympics[which.max((olympics$Gold - olympics$Gold.1)/(olympics$Gold + olympics$Gold.1)), 'Country']
     }
 
 answer_three()
+
+
 ```
 Питання 4
 Необхідно знайти кількість балів по кожній крайні. Бали рахуються наступним
@@ -131,6 +132,14 @@ Bronze.2 – 1 бал.
 Функція повинна повертати дата фрейм довжиною 146, який складається з двох
 колонок: "Country", "Points".
 ```{r}
+answer_four <- function() {
+    Points <- olympics$Gold.2*3 + olympics$Silver.2*2 + olympics$Bronze.2*2
+    df <- data.frame(olympics$Country, Points)
+    names(df) <- c('Country', 'Points')
+    df
+    }
+
+answer_four()
 
 ```
 
