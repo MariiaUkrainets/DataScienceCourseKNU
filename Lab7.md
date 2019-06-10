@@ -26,8 +26,7 @@ library("stringr")
 
 Функція prepare_set повинна виконувати наступні дії:
 
-    1. Зчитати файл
-`
+1. Зчитати файл
 
 2. Першому стовпцю дати назву “Country”
 
@@ -152,14 +151,37 @@ https://www.dropbox.com/s/c1b2vqg8i3m1n93/census.csv?dl=0
 Файл необхідно завантажити в змінну census_df
 #Зчитуємо файл
 census_df <- read.csv("census.csv", stringsAsFactors = FALSE)
+
 Питання 5
 В якому штаті (state) більше всього округів (county)?
 Функція повинна повернути одне текстове значення
+```{r}
+census_df <- read.csv("census.csv", stringsAsFactors = FALSE)
+head(census_df)
+
+
+answer_five <- function() {
+    state <- split(census_df, census_df$STNAME)
+    city <- sapply(state, nrow)
+    names(which.max(city))
+    }
+
+answer_five()
+
+```
 Питання 6
 Якщо розглядати три найбільш населених округа (county) з кожного штату, які три
 найбільш населені штати (в порядку з більш до менш населеного)?
 Використовуйте CENSUS2010POP.
 Функція повинна повернути вектор з трьох текстових значень.
+```{r}
+answer_six <- function() {
+    census_order <- census_df[order(census
+    }
+
+answer_six()
+
+```
 Питання 7
 Який округ (county) має найбільшу абсолютну зміну в населенні протягом
 періоду 2010-2015?
@@ -168,8 +190,24 @@ census_df <- read.csv("census.csv", stringsAsFactors = FALSE)
 Якщо населення округу за 5річний період 100, 120, 80, 105, 100, 130, то найбільша
 різниця за період буде |130-80|=50.
 Функція повинна повернути одне текстове значення.
+```{r}
+answer_seven <- function() {
+    
+    }
+
+answer_seven()
+
+```
 Питання 8
 В census_df США поділені на 4 регіони (колонка "REGION"). Напишіть функцію,
 яка знаходить округи (county), що належать регіонам 1 або 2, назва яких
 починається з "Washington" та POPESTIMATE2015 більше ніж POPESTIMATE2014.
 Функція повинна повернути 5х2 дата фрейм з колонками "STNAME", "CTYNAME".
+```{r}
+answer_eight <- function() {
+    
+    }
+
+answer_eight()
+
+```
