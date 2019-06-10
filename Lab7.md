@@ -325,12 +325,12 @@ answer_six <- function() {
     census_order <- census_df[order(census_df$STNAME, -census_df$CENSUS2010POP), ]
     stname <- split(census_order, census_order$STNAME)
     stname <- lapply(stname, function(x) sum(x[2:4, 'CENSUS2010POP']))
-    stname <- stname[order(unlist(stname), decreasing = TRUE, na.last=True)]
+    stname <- stname[order(unlist(stname), decreasing = TRUE, na.last=TRUE)]
     names(stname)[1:3]
     }
 
 answer_six()
-
+[1] "California" "Texas"      "Illinois"
 
 ```
 Питання 7
@@ -355,7 +355,7 @@ answer_seven <- function() {
 }
 
 answer_seven()
-
+[1] "Texas"
 ```
 Питання 8
 В census_df США поділені на 4 регіони (колонка "REGION"). Напишіть функцію,
@@ -367,8 +367,12 @@ answer_eight <- function() {
     df1 <- subset(census_df, (census_df$REGION == 1 | census_df$REGION == 4) & census_df$POPESTIMATE2015 > census_df$POPESTIMATE2014 & census_df$STNAME == "Washington")[1:5,c("STNAME", "CTYNAME")]
     df1
 }
-    }
 
 answer_eight()
-
+         STNAME        CTYNAME
+3001 Washington     Washington
+3002 Washington   Adams County
+3004 Washington  Benton County
+3005 Washington  Chelan County
+3006 Washington Clallam County
 ```
