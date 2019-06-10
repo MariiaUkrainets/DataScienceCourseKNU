@@ -121,7 +121,7 @@ answer_three <- function() {
     }
 
 answer_three()
-
+[1] "Bulgaria"
 
 ```
 Питання 4
@@ -140,6 +140,153 @@ answer_four <- function() {
 
 answer_four()
 
+                             Country Points
+1                        Afghanistan      4
+2                            Algeria     35
+3                          Argentina    158
+4                            Armenia     25
+5                        Australasia     27
+6                          Australia   1104
+7                            Austria    685
+8                         Azerbaijan     58
+9                            Bahamas     29
+10                           Bahrain      2
+11                          Barbados      2
+12                           Belarus    198
+13                           Belgium    332
+14                           Bermuda      2
+15                           Bohemia      8
+16                          Botswana      2
+17                            Brazil    239
+18               British West Indies      4
+19                          Bulgaria    492
+20                           Burundi      3
+21                          Cameroon     13
+22                            Canada   1019
+23                             Chile     28
+24                             China   1265
+25                          Colombia     40
+26                        Costa Rica      9
+27                       Ivory Coast      2
+28                           Croatia     78
+29                              Cuba    490
+30                            Cyprus      2
+31                    Czech Republic    157
+32                    Czechoslovakia    387
+33                           Denmark    403
+34                          Djibouti      2
+35                Dominican Republic     15
+36                           Ecuador      5
+37                             Egypt     59
+38                           Eritrea      2
+39                           Estonia     93
+40                          Ethiopia    111
+41                           Finland   1069
+42                            France   1793
+43                             Gabon      2
+44                           Georgia     56
+45                           Germany   1816
+46            United Team of Germany    310
+47                      East Germany   1230
+48                      West Germany    553
+49                             Ghana      8
+50                     Great Britain   1858
+51                            Greece    252
+52                           Grenada      3
+53                         Guatemala      2
+54                            Guyana      2
+55                             Haiti      4
+56                         Hong Kong      7
+57                           Hungary   1131
+58                           Iceland      8
+59                             India     61
+60                         Indonesia     60
+61                              Iran    135
+62                              Iraq      2
+63                           Ireland     67
+64                            Israel     15
+65                             Italy   1561
+66                           Jamaica    151
+67                             Japan   1026
+68                        Kazakhstan    135
+69                             Kenya    197
+70                       North Korea    112
+71                       South Korea    699
+72                            Kuwait      4
+73                        Kyrgyzstan      6
+74                            Latvia     55
+75                           Lebanon      8
+76                     Liechtenstein     20
+77                         Lithuania     48
+78                        Luxembourg      9
+79                         Macedonia      2
+80                          Malaysia     12
+81                         Mauritius      2
+82                            Mexico    137
+83                           Moldova     14
+84                          Mongolia     50
+85                        Montenegro      2
+86                           Morocco     50
+87                        Mozambique      5
+88                           Namibia      8
+89                       Netherlands    866
+90              Netherlands Antilles      2
+91                       New Zealand    242
+92                             Niger      2
+93                           Nigeria     49
+94                            Norway   1128
+95                          Pakistan     23
+96                            Panama      7
+97                          Paraguay      2
+98                              Peru      9
+99                       Philippines     18
+100                           Poland    652
+101                         Portugal     50
+102                      Puerto Rico     16
+103                            Qatar      8
+104                          Romania    692
+105                           Russia   1219
+106                   Russian Empire     17
+107                     Soviet Union   2881
+108                     Unified Team    324
+109                     Saudi Arabia      6
+110                          Senegal      2
+111                           Serbia     15
+112            Serbia and Montenegro     20
+113                        Singapore      8
+114                         Slovakia     67
+115                         Slovenia     74
+116                     South Africa    175
+117                            Spain    304
+118                        Sri Lanka      4
+119                            Sudan      2
+120                         Suriname      5
+121                           Sweden   1447
+122                      Switzerland    743
+123                            Syria      7
+124                   Chinese Taipei     44
+125                       Tajikistan      6
+126                         Tanzania      4
+127                         Thailand     55
+128                             Togo      2
+129                            Tonga      2
+130              Trinidad and Tobago     38
+131                          Tunisia     23
+132                           Turkey    215
+133                           Uganda     16
+134                          Ukraine    279
+135             United Arab Emirates      3
+136                    United States   6434
+137                          Uruguay     22
+138                       Uzbekistan     48
+139                        Venezuela     26
+140                          Vietnam      4
+141                   Virgin Islands      2
+142                       Yugoslavia    200
+143 Independent Olympic Participants      6
+144                           Zambia      4
+145                         Zimbabwe     19
+146                       Mixed team     42
 ```
 
 Частина 2.
@@ -159,7 +306,6 @@ census_df <- read.csv("census.csv", stringsAsFactors = FALSE)
 census_df <- read.csv("census.csv", stringsAsFactors = FALSE)
 head(census_df)
 
-
 answer_five <- function() {
     state <- split(census_df, census_df$STNAME)
     city <- sapply(state, nrow)
@@ -167,7 +313,7 @@ answer_five <- function() {
     }
 
 answer_five()
-
+[1] "Texas"
 ```
 Питання 6
 Якщо розглядати три найбільш населених округа (county) з кожного штату, які три
@@ -176,10 +322,15 @@ answer_five()
 Функція повинна повернути вектор з трьох текстових значень.
 ```{r}
 answer_six <- function() {
-    census_order <- census_df[order(census
+    census_order <- census_df[order(census_df$STNAME, -census_df$CENSUS2010POP), ]
+    stname <- split(census_order, census_order$STNAME)
+    stname <- lapply(stname, function(x) sum(x[2:4, 'CENSUS2010POP']))
+    stname <- stname[order(unlist(stname), decreasing = TRUE, na.last=True)]
+    names(stname)[1:3]
     }
 
 answer_six()
+
 
 ```
 Питання 7
@@ -192,8 +343,16 @@ answer_six()
 Функція повинна повернути одне текстове значення.
 ```{r}
 answer_seven <- function() {
-    
-    }
+  df2 <- census_df[,10:15]
+  df2$MAX <- apply(df2, 1, max)
+  df2$MIN <- apply(df2, 1, min)
+  df2 <- cbind(STNAME = census_df$STNAME, df2)
+  df2$ABS <- abs(df2$MAX - df2$MIN)
+  df2 <- aggregate(ABS ~ STNAME, df2, sum)
+  df3 <- subset(df2, ABS == max(ABS))  
+  df3 <- as.character(df3$STNAME)
+  df3
+}
 
 answer_seven()
 
@@ -205,7 +364,9 @@ answer_seven()
 Функція повинна повернути 5х2 дата фрейм з колонками "STNAME", "CTYNAME".
 ```{r}
 answer_eight <- function() {
-    
+    df1 <- subset(census_df, (census_df$REGION == 1 | census_df$REGION == 4) & census_df$POPESTIMATE2015 > census_df$POPESTIMATE2014 & census_df$STNAME == "Washington")[1:5,c("STNAME", "CTYNAME")]
+    df1
+}
     }
 
 answer_eight()
