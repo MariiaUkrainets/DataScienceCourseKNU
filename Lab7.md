@@ -67,7 +67,7 @@ prepare_set <- function(file_name){
     olympics <- olympics[-which(olympics$Country == "Totals"),]
     olympics
 }
-prepare_set('olympics.csv')
+olympics <- prepare_set('olympics.csv')
 
 tail(olympics$Country)
 
